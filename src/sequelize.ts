@@ -1,5 +1,5 @@
 import {Sequelize} from 'sequelize-typescript';
-import {DB, DIR} from "../config"
+import {DB, DIR} from "./core/config"
  
 /*export const sequelize = new Sequelize({
     dialect: 'mysql',
@@ -11,10 +11,13 @@ import {DB, DIR} from "../config"
     pool: DB.pool,
    models: [D'app/models']
   });*/
-  export const sequelize = new Sequelize(DB.DB, DB.USER, DB.PASSWORD, {
-    dialect: "mysql",
-    port: 3306,
-    models: ['./app/models']
-  });
-
-  console.log(DIR);
+ 
+  
+  export const sequlize = new Sequelize(DB.DB, DB.USER, DB.PASSWORD, {
+    host: DB.HOST,
+    dialect: 'mysql',
+    pool:DB.pool,
+    models: [__dirname + '/models'] 
+ });
+  console.log(__dirname+'/models')
+console.log(DB)
