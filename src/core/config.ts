@@ -17,4 +17,6 @@ export const DB =  {
     }
   } ;
   export const DIR = __dirname; 
+
+  export const SERVER_PORT = process.env.SERVER_PORT
   

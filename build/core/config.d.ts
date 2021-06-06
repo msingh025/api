@@ -12,3 +12,4 @@ export declare const DB: {
     };
 };
 export declare const DIR: string;
+export declare const SERVER_PORT: string | undefined;

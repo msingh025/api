@@ -14,7 +14,7 @@ export interface UserI{
         timestamps: true
     }
 )
-export default class User extends Model implements UserI{
+export  default class User extends Model implements UserI{
     
     @AutoIncrement
     @PrimaryKey
