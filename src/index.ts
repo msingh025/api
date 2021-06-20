@@ -1,41 +1,38 @@
-import  { Request, Response, NextFunction } from 'express';
+import  { Request, Response, NextFunction, Router } from 'express';
 import * as express from 'express';
 import {SERVER_PORT} from './core/config'
 import {sequlize} from './sequelize';
-import  User from './models/user';
-const app = express()
-const port = SERVER_PORT
-sequlize.authenticate().then(async (data)=>{
-    try{ 
-        console.log("connection");
-    await sequlize.sync({force:true});
-    } catch(ex) {
-         console.error(ex);
-    }
-})
-app.get('/', async (req: any, res: any, next : any) => {
-    
-    res.json('Hello world')
-})
-app.post('/user', async (req: Request, res: Response, next: NextFunction) => {
-   console.log(req.params);
-   
-   const result = await User.create({
-    first_name: "maneesh",
-    last_name: "singh",
-    email: "memaneesh@hotmail.com",
-    password: "Hello@1234"
-   });
-   console.log(result);
-   res.json({status:200})
+import * as db from './core/lib/db';
+import routes from './routes/v1';
+// connect to  MYSQL data base
+process.on('uncaughtException', (e) => {
+  console.error(e);
 });
-app.put('/user', async (req: Request, res: Response, next:NextFunction) =>{
-    const result= await User.update({first_name:"demo "}, {where:{id : 1}});
-    res.json({
-       status:200, 
-       result: result
-   });
-})
-app.listen(port, () => {
-    console.log(`App is listening on port ${port}`)
-})
+db.connect(sequlize);
+const app = express();
+const router  = Router();
+/**
+ *  For Security reason disable x-powered-by
+ */
+app.disable('x-powered-by');
+
+app.use(
+    express.urlencoded({
+      extended: true
+    })
+  )
+  
+app.use(express.json())
+
+app.use('/v1',routes);
+
+app.use((err:Error, req:Request, res:Response, next:NextFunction)=>{
+  console.log(err)
+  if(err){ 
+      console.log('Error in request', err);
+      res.status(400).json({err});
+  }
+  console.log('end Request ');
+
+});
+export  default app;
