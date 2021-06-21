@@ -1,9 +1,11 @@
+import log, {loginit} from './core/logger';
 import  { Request, Response, NextFunction, Router } from 'express';
 import * as express from 'express';
 import {SERVER_PORT} from './core/config'
 import {sequlize} from './sequelize';
 import * as db from './core/lib/db';
 import routes from './routes/v1';
+
 // connect to  MYSQL data base
 process.on('uncaughtException', (e) => {
   console.error(e);
@@ -21,7 +23,7 @@ app.use(
       extended: true
     })
   )
-  
+  log.info("Enter to index ");
 app.use(express.json())
 
 app.use('/v1',routes);
